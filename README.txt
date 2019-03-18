@@ -1,3 +1,72 @@
+Adapted from the codebase at the below link: 
+http://cseweb.ucsd.edu/~viscomp/projects/SIG17HDR/
+
+Initial release implementation by Nima K. Kalantari, 2017.
+
+-------------------------------------------------------------------------
+OVERVIEW
+
+This algorithm takes in a set of three low dynamic range images at different
+exposures (in .tif format) as well as a text file containing their exposure bias
+and produces an HDR image in .hdr format. In our system, the HDR image is always 
+aligned to the image with the middle exposure. For the scenes with ground truth 
+image we also output a text file containing the PSNR between the estimated and 
+ground truth HDR images.
+
+The code was written in MATLAB 2016b, and tested on Windows 10. When we opened
+it, we had a lot of problems compiling OpticalFlow and MatConvNet. We hope that
+we have resolved these such that you will be able to run it out of the box, but 
+we never got it to work on Linux, so we recommend running with a Mac if you have
+one available, on which we run the code. The setup will take significant time.
+
+-------------------------------------------------------------------------
+
+1. Follow the MatConvNet installation instruction to set it up properly. 
+   From http://www.vlfeat.org/matconvnet/install/:
+      - Go to Libraries/matconvnet-1.0-beta25
+      - Start Matlab
+        > addpath matlab
+        > vl_compilenn
+        > vl_setupnn
+
+2. In the Libraries/OpticalFlow/mex directory, run this command:
+
+       mex -v -compatibleArrayDims Coarse2FineTwoFrames.cpp OppticalFlow.cpp GaussianPyramid.cpp
+
+   and copy all Coarse2FineTwoFrames files into the Libraries directory.
+
+3. We have included 2 training scenes, 2 development scenes, and 2 test scenes in all of the proper folders.
+
+4. Run "PrepareData.m" before training (this will take awhile to run). Testing should work without running "PrepareData.m".
+
+5. The code is now ready to be executed. Simply run "TRANSFERTest.m" to test (our transfer trained network will be tested) and "TRANSFERTrain.m" to train the images after having ran "PrepareData.m".
+
+6. The results of testing will be in the /Results folder.
+
+Any further questions can be sent to nsgaudio@stanford.edu or sosekows@stanford.edu
+
+Files we wrote:
+
+DatasetFigure.m
+ImagePreprocess_TIF.m
+PrepareData.m
+PSNRFigure.m
+ResizeImages.m
+SSIMPSNRFigureData.m
+StaticHDRBlendingFormation.m
+TRANSFERTest.m
+TRANSFERTrain.m
+TRANSFERCreateNet.mTRANSFEREvaluateNet.mTRANSFEREvaluateSystem.mTRANSFERGenerateHDR.mTRANSFERLoadNetwork.mTRANSFERTestDuringTraining.mTRANSFERTrainSystem.mTRANSFERUpdateNet.m
+
+
+
+
+
+
+
+
+The UCSD README:
+
 SOURCE CODE FOR "DEEP HIGH DYNAMIC RANGE IMAGING OF DYNAMIC SCENES"
 
 This package is a MATLAB implementation of the learning-based HDR reconstruction
